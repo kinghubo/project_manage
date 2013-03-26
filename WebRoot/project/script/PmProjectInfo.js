@@ -15,13 +15,28 @@ function cmsUserPanel() {
 		name : 'id',
 		type : 'string'
 	}, {
-		name : 'username',
+		name : 'name',
 		type : 'string'
 	}, {
-		name : 'password', 
+		name : 'explanation', 
 		type : 'string'
 	}, {
-		name : 'createtime',
+		name : 'level',
+		type : 'string'
+	}, {
+		name : 'type',
+		type : 'string'
+	}, {
+		name : 'createDate',
+		type : 'string'
+	}, {
+		name : 'lastUpdate',
+		type : 'string'
+	}, {
+		name : 'createUserId',
+		type : 'string'
+	}, {
+		name : 'createUserName',
 		type : 'string'
 	}
 	]);
@@ -31,30 +46,60 @@ function cmsUserPanel() {
 	});
 
 	var cm = new Ext.grid.ColumnModel( [ new Ext.grid.RowNumberer(), sm, 
-											{
-												header : '用户名',
+	                                     	{
+												header : '主键',
 												align : 'center',
 												sortable: true,editor:new Ext.form.TextField(),
-												dataIndex : 'username',
+												dataIndex : 'id',
 												width : 120
+											},{
+												header : '项目名称',
+												align : 'center',
+												sortable: true,editor:new Ext.form.TextField(),
+												dataIndex : 'name',
+												width : 120
+											},{
+												header : '项目说明',
+												align : 'center',
+												sortable: true,editor:new Ext.form.TextField(),
+												dataIndex : 'explanation',
+												width : 180
+											},{
+												header : '项目级别',
+												align : 'center',
+												sortable: true,editor:new Ext.form.TextField(),
+												dataIndex : 'level',
+												width : 180
+											},{
+												header : '项目分类',
+												align : 'center',
+												sortable: true,editor:new Ext.form.TextField(),
+												dataIndex : 'type',
+												width : 180
 											},{
 												header : '创建时间',
 												align : 'center',
 												sortable: true,editor:new Ext.form.TextField(),
-												dataIndex : 'createtime',
+												dataIndex : 'createDate',
 												width : 180
 											},{
-												header : 'ID',
+												header : '更新时间',
 												align : 'center',
 												sortable: true,editor:new Ext.form.TextField(),
-												dataIndex : 'id',
+												dataIndex : 'lastUpdate',
+												width : 180
+											},{
+												header : '创建人',
+												align : 'center',
+												sortable: true,editor:new Ext.form.TextField(),
+												dataIndex : 'createUserName',
 												width : 180
 											} ]);
 
 	var storeme = new Ext.data.Store( {
 		id : "storeme",
 		proxy : new Ext.data.HttpProxy( {
-			url : 'queryCmsUsers.do'+"?rmd="+new Date(),
+			url : 'ProjectInfo!queryProjectInfos.do'+"?rmd="+new Date(),
 			method : 'post',
 			params : { start : 0,limit : 20 }
 		}),

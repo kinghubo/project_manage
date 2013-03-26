@@ -20,5 +20,12 @@
 		<mapping class="com.taogongbao.entity.cms.CmsGroup" />
 		<mapping class="com.taogongbao.entity.cms.CmsGroupManager" />
 		<mapping class="com.taogongbao.entity.cms.CmsEntGroup" />
+		
+		<!-- project -->
+		<mapping class="com.taogongbao.entity.project.PmFunds" />
+		<mapping class="com.taogongbao.entity.project.PmLog" />
+		<mapping class="com.taogongbao.entity.project.PmNotice" />
+		<mapping class="com.taogongbao.entity.project.PmProjectInfo" />
+		<mapping class="com.taogongbao.entity.project.PmResource" />
 	</session-factory>
 </hibernate-configuration>

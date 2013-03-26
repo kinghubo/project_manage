@@ -82,4 +82,29 @@
 	<!-- **************************** cms end **************************** -->
 	<!-- **************************** cms end **************************** -->
 	
+	<!-- **************************** project start **************************** -->
+	<!-- **************************** project start **************************** -->
+	<bean id="pmFundsDao" class="com.taogongbao.dao.project.impl.PmFundsDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.project.PmFunds"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="pmLogDao" class="com.taogongbao.dao.project.impl.PmLogDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.project.PmLog"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="pmNoticeDao" class="com.taogongbao.dao.project.impl.PmNoticeDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.project.PmNotice"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="pmProjectInfoDao" class="com.taogongbao.dao.project.impl.PmProjectInfoDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.project.PmProjectInfo"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="pmResourceDao" class="com.taogongbao.dao.project.impl.PmResourceDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.project.PmResource"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- **************************** project end **************************** -->
+	<!-- **************************** project end **************************** -->
+	
 </beans>

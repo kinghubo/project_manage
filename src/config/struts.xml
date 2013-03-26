@@ -7,6 +7,7 @@
 
 	<include file="/config/struts-tgb.xml" />
 	<include file="/config/struts-userpopedom.xml" />
+	<include file="/config/struts-project.xml" />
 
 	<!-- 常量 -->
 	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
