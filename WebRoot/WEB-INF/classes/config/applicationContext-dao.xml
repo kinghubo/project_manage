@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+	default-lazy-init="true">
+	
+	<!-- **************************** pu begin **************************** -->
+	<!-- **************************** pu begin **************************** -->
+	
+	<bean id="broadcastGroupDao" class="com.taogongbao.dao.pu.impl.BroadcastGroupDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.pu.BroadcastGroup"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="sysParaDao" class="com.taogongbao.dao.pu.impl.SysParaDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.pu.SysPara"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="optionsDao" class="com.taogongbao.dao.pu.impl.OptionsDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.pu.Options" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="industryDao" class="com.taogongbao.dao.pu.impl.DictionaryIndustryDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.pu.DictionaryIndustry" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="posiDao" class="com.taogongbao.dao.pu.impl.DictionaryPositionDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.pu.DictionaryIndustry" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="locationDao" class="com.taogongbao.dao.pu.impl.LocationDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.pu.Location" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cacheDao" class="com.taogongbao.dao.CacheDaoImpl">
+		<property name="optionsDao" ref="optionsDao" />
+		<property name="industryDao" ref="industryDao" />
+		<property name="posiDao" ref="posiDao" />
+		<property name="locationDao" ref="locationDao" />
+	</bean>
+	
+	<!-- **************************** pu end **************************** -->
+	<!-- **************************** pu end **************************** -->
+	
+	
+	
+	<!-- **************************** cms begin **************************** -->
+	<!-- **************************** cms begin **************************** -->
+	
+	<bean id="cmsUserDao" class="com.taogongbao.dao.cms.impl.CmsUserDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.cms.CmsUser"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cmsMenuDao" class="com.taogongbao.dao.cms.impl.CmsMenuDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.cms.CmsMenu"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cmsPopedomGroupDao" class="com.taogongbao.dao.cms.impl.CmsPopedomGroupDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.cms.CmsPopedomGroup"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cmsGroupUserDao" class="com.taogongbao.dao.cms.impl.CmsGroupUserDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.cms.CmsGroupUser"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cmsUserLogDao" class="com.taogongbao.dao.cms.impl.CmsUserLogDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.cms.CmsUserLog"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cmsGroupDao" class="com.taogongbao.dao.cms.impl.CmsGroupDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.cms.CmsGroup"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cmsGroupManagerDao" class="com.taogongbao.dao.cms.impl.CmsGroupManagerDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.cms.CmsGroupManager"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cmsEntGroupDao" class="com.taogongbao.dao.cms.impl.CmsEntGroupDaoImpl">
+		<constructor-arg value="com.taogongbao.entity.cms.CmsEntGroup"></constructor-arg>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- **************************** cms end **************************** -->
+	<!-- **************************** cms end **************************** -->
+	
+</beans>

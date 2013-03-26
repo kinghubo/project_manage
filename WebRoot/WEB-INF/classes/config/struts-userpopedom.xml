@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+		<!-- ****************** 用户与权限管理 ******************** -->
+<struts>
+	<package name="userpopedom" extends="struts-default">
+	
+		<interceptors>
+			<interceptor name="sessionOut" class="com.taogongbao.action.SessionIterceptor"></interceptor>
+			<!-- 拦截器栈 -->
+			<interceptor-stack name="tgbDefault">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="sessionOut" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 默认拦截器 -->
+		<default-interceptor-ref name="tgbDefault"></default-interceptor-ref>
+	
+		<!-- ****************** 用户管理 ******************** -->
+		<action name="addCmsUser" class="com.taogongbao.action.userpopedom.CmsUserAction" method="addCmsUser"></action>
+		<action name="deleteCmsUsers" class="com.taogongbao.action.userpopedom.CmsUserAction" method="deleteCmsUsers"></action>
+		<action name="queryCmsUsers" class="com.taogongbao.action.userpopedom.CmsUserAction" method="queryCmsUsers"></action>
+		<action name="updatePassword" class="com.taogongbao.action.userpopedom.CmsUserAction" method="updatePassword"></action>
+		<action name="updateCmsUserPassword" class="com.taogongbao.action.userpopedom.CmsUserAction" method="updateCmsUserPassword"></action>
+		<action name="getCurrentAccountName" class="com.taogongbao.action.userpopedom.CmsUserAction" method="getCurrentAccountName"/>
+		
+		<!-- ****************** 权限设置  ******************** -->
+		<!-- 得到所有权限组-->
+		<action name="queryPopedomGroup" class="com.taogongbao.action.userpopedom.PopedomGroupAction" method="queryPopedomGroup"></action>
+		<!-- 增加权限组-->
+		<action name="addPopedomGroup" class="com.taogongbao.action.userpopedom.PopedomGroupAction" method="addPopedomGroup"></action>
+		<!-- 权限组增加权限-->
+		<action name="addPopedomToGroup" class="com.taogongbao.action.userpopedom.PopedomGroupAction" method="addPopedomToGroup"></action>
+		<!-- 删除权限组 并 删除其对应的用户-->
+		<action name="deletePopedomGroup" class="com.taogongbao.action.userpopedom.PopedomGroupAction" method="deletePopedomGroup"></action>
+		<!-- 修改权限组-->
+		<action name="updatePopedomGroup" class="com.taogongbao.action.userpopedom.PopedomGroupAction" method="updatePopedomGroup"></action>
+		<!-- 通过组ID得到其下的用户-->
+		<action name="getGroupUserByGroupId" class="com.taogongbao.action.userpopedom.PopedomGroupAction" method="getGroupUserByGroupId"></action>
+		<!-- 权限组新增组员-->
+		<action name="addGroupUser" class="com.taogongbao.action.userpopedom.PopedomGroupAction" method="addGroupUser"></action>
+		<!-- 权限组删除组员-->
+		<action name="deleteGroupUser" class="com.taogongbao.action.userpopedom.PopedomGroupAction" method="deleteGroupUser"></action>
+		<!-- 查看权限树-->
+		<action name="getPopedomTree" class="com.taogongbao.action.userpopedom.PopedomGroupAction" method="getPopedomTree"></action>
+		
+		<!-- ****************** 菜单管理 ******************** -->
+		<!-- 得到所有菜单-->
+		<action name="getAllCmsMenu" class="com.taogongbao.action.userpopedom.MenuAction" method="getAllCmsMenu"></action>
+		<!-- 增加菜单-->
+		<action name="addMenu" class="com.taogongbao.action.userpopedom.MenuAction" method="addMenu"></action>
+		<!-- 修改菜单-->
+		<action name="updateMenu" class="com.taogongbao.action.userpopedom.MenuAction" method="updateMenu"></action>
+		<!-- 结点中转站-->
+		<action name="nodeTransferStation" class="com.taogongbao.action.userpopedom.MenuAction" method="nodeTransferStation"></action>
+		<!--删除菜单-->
+		<action name="deleteMenuById" class="com.taogongbao.action.userpopedom.MenuAction" method="deleteMenuById"></action>
+		<!--得到菜单树-->
+		<action name="getMenuTree" class="com.taogongbao.action.userpopedom.MenuAction" method="getMenuTree"></action>
+		
+		
+		<!-- ****************** 菜单管理 ******************** -->
+		<!-- 遍历CMS用户日志-->
+		<action name="queryCmsUserLog" class="com.taogongbao.action.userpopedom.CmsUserLogAction" method="queryCmsUserLog"></action>
+		
+	</package>
+</struts>

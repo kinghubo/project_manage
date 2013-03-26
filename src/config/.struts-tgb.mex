@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Struts2Diagram version="2.0">
+  <package name="tgb" location="10,10" size="1995,665">
+    <action name="saveCmsUser" location="0,0" size="0,0" />
+    <action name="updateUserPwd" location="65,583" size="150,40" />
+    <action name="getCmsUsers" location="0,0" size="0,0" />
+    <action name="getUnckeckedUserList" location="1780,583" size="150,40" />
+    <action name="export2Excel" location="0,0" size="0,0" />
+    <action name="toEnt" location="1780,128" size="150,40" />
+    <action name="userToTry" location="310,128" size="150,40" />
+    <action name="channelToTry" location="310,513" size="150,40" />
+    <action name="toChannel" location="1535,513" size="150,40" />
+    <action name="checkUserAsDel" location="0,0" size="0,0" />
+    <action name="getTrialUserList" location="1535,198" size="150,40" />
+    <action name="getSuccessUserList" location="0,0" size="0,0" />
+    <action name="getJobMeetingList" location="555,198" size="150,40" />
+    <action name="export2ExcelJobMeeting" location="0,0" size="0,0" />
+    <action name="updateJobMeeting" location="555,443" size="150,40" />
+    <action name="getJobmeeting" location="1290,443" size="150,40" />
+    <action name="addIsNew" location="0,0" size="0,0" />
+    <action name="passJob" location="1290,268" size="150,40" />
+    <action name="failJob" location="800,268" size="150,40" />
+    <action name="getJobList" location="800,373" size="150,40" />
+    <action name="export2ExcelJob" location="0,0" size="0,0" />
+    <action name="getAdList" location="1045,373" size="150,40" />
+    <action name="getCombo" location="0,0" size="0,0" />
+    <action name="saveCombo" location="0,0" size="0,0" />
+    <action name="getPurchase" location="0,0" size="0,0" />
+    <action name="queryByPurchases" location="0,0" size="0,0" />
+    <action name="export2ExcelAdGrid" location="0,0" size="0,0" />
+    <action name="checkAdStatus" location="0,0" size="0,0" />
+    <action name="getEntInfoList" location="0,0" size="0,0" />
+    <action name="getLocationsByType" location="0,0" size="0,0" />
+    <action name="getJobCount" location="0,0" size="0,0" />
+    <action name="getCountJob" location="0,0" size="0,0" />
+    <action name="getResumeDCount" location="0,0" size="0,0" />
+    <action name="getCountResumeD" location="0,0" size="0,0" />
+    <action name="getResumeDowByRId" location="0,0" size="0,0" />
+    <action name="getResumeDowByEntId" location="0,0" size="0,0" />
+    <action name="getResumeDowByGjz" location="0,0" size="0,0" />
+    <action name="getAdGroup" location="0,0" size="0,0" />
+    <action name="getAdGroup2" location="0,0" size="0,0" />
+  </package>
+  <webResource name="index.jsp" path="../index.jsp" location="2060,30" size="150,55" />
+</Struts2Diagram>
+

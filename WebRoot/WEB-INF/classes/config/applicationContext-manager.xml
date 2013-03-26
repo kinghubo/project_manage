@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+	default-lazy-init="true">
+
+	<!-- ************** 事务管理配置 ************** -->
+	<!-- 配置事务管理器bean,使用HibernateTransactionManager事务管理器(也可以用JTA替代) -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<!-- 为事务管理器注入sessionFactory" -->
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<!--  事务拦截器bean需要依赖注入一个事务管理器 -->
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<!--  下面定义事务传播属性 -->
+			<props>
+				<!-- 
+				<prop key="get*">PROPAGATION_REQUIRED</prop> SSSSS 取数据的同时，还有其它业务操作 EEEEE
+				<prop key="find*">PROPAGATION_REQUIRED</prop> SSSSS 纯粹取数据用 EEEEE
+				 -->
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<!-- <prop key="*">PROPAGATION_REQUIRED,readOnly</prop> -->
+			</props>
+		</property>
+	</bean>
+
+	<!-- 定义BeanNameAutoProxyCreator -->
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<!--  指定对满足哪些bean name的bean自动生成业务代理 -->
+		<property name="beanNames">
+			<!--  下面是所有需要自动创建事务代理的bean -->
+			<list>
+				<value>*ManagerImpl</value>
+			</list>
+			<!--  此处可增加其他需要自动创建事务代理的bean -->
+		</property>
+		<!--  下面定义BeanNameAutoProxyCreator所需的事务拦截器 -->
+		<property name="interceptorNames">
+			<list>
+				<!-- 此处可增加其他新的Interceptor -->
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	<!-- ************** 事务管理配置END ************** -->
+	
+	<bean id="loginManager" class="com.taogongbao.manager.LoginManagerImpl">
+		<property name="cmsGroupUserDao" ref="cmsGroupUserDao"></property>
+		<property name="cmsMenuDao" ref="cmsMenuDao"></property>
+		<property name="cmsPopedomGroupDao" ref="cmsPopedomGroupDao"></property>
+		<property name="cmsUserDao" ref="cmsUserDao"></property>
+	</bean>
+	<bean id="commonManager" class="com.taogongbao.manager.CommonManagerImpl">
+		<property name="locationDao" ref="locationDao"></property>
+		<property name="optionsDao" ref="optionsDao"></property>
+	</bean>
+	
+	<!-- **************   userpopedom    ************ -->
+	<bean id="cmsUserManager" class="com.taogongbao.manager.userpopedom.impl.CmsUserManagerImpl">
+		<property name="cmsUserDao" ref="cmsUserDao"></property>
+		<property name="cmsGroupUserDao" ref="cmsGroupUserDao"></property>
+	</bean>
+ 	<bean id="menuManager" class="com.taogongbao.manager.userpopedom.impl.MenuManagerImpl">
+		<property name="cmsMenuDao" ref="cmsMenuDao"></property>
+	</bean>
+ 	<bean id="popedomGroupManager" class="com.taogongbao.manager.userpopedom.impl.PopedomGroupManagerImpl">
+		<property name="cmsMenuDao" ref="cmsMenuDao"></property>
+		<property name="cmsGroupUserDao" ref="cmsGroupUserDao"></property>
+		<property name="cmsPopedomGroupDao" ref="cmsPopedomGroupDao"></property>
+	</bean>
+	<bean id="cmsUserLogManager" class="com.taogongbao.manager.userpopedom.impl.CmsUserLogManagerImpl">
+		<property name="cmsUserLogDao" ref="cmsUserLogDao"></property>
+	</bean>
+	
+	
+	
+	<!-- **************   account    ************ -->
+	<bean id="accountManager" class="com.taogongbao.manager.account.impl.AccountManagerImpl">
+		<property name="cmsGroupDao" ref="cmsGroupDao"></property>
+		<property name="cmsGroupManagerDao" ref="cmsGroupManagerDao"></property>
+		<property name="cmsEntGroupDao" ref="cmsEntGroupDao"></property>
+		<property name="cmsUserDao" ref="cmsUserDao"></property>
+		<property name="cmsUserLogDao" ref="cmsUserLogDao"></property>
+		<property name="cmsGroupUserDao" ref="cmsGroupUserDao"></property>
+	</bean>
+	
+</beans>
+
+

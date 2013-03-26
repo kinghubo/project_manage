@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- 加载属性文件 -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:properties/jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    
+    <!-- 使用DBCP数据库连接池进行数据源的配置 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxActive" value="2"/>
+        <property name="maxWait" value="1000"/>
+        <property name="poolPreparedStatements" value="false"/>
+        <property name="defaultAutoCommit" value="true"/>
+        <property name="removeAbandoned" value="true"/>
+        <property name="logAbandoned" value="true"/>
+        <property name="minEvictableIdleTimeMillis" value="10"/>
+        <property name="removeAbandonedTimeout" value="5"/>
+    </bean>
+	
+	
+	<!-- Hibernate SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocations">
+        	<list>
+        		<value>classpath:config/hibernate.cfg.xml</value>
+        	</list>
+        </property>
+        <property name="hibernateProperties">
+            <value>
+            	<!-- 数据库方言 -->
+                hibernate.dialect=${hibernate.dialect}
+                <!-- 是否在控制台显示sql语句 -->
+                hibernate.show_sql=true
+                <!-- 查询符号的重新定义 -->
+                hibernate.query.substitutions=true '1', false '0'
+                <!-- 查询缓存 -->
+                hibernate.cache.use_query_cache=true
+                <!-- 二级缓存配置 -->
+                hibernate.cache.use_second_level_cache=true
+                hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider
+                hibernate.cglib.use_reflection_optimizer=true
+            </value>
+        </property>
+        
+        <!-- 监听 保存或更新 事件 -->
+        <property name="eventListeners">
+			<map>
+				<entry key="merge">
+					<list>
+						<bean class="org.hibernate.event.def.DefaultMergeEventListener" />
+					</list>
+				</entry>
+			</map>
+		</property>
+    </bean>
+    
+		
+</beans>

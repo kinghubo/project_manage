@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="tgb" extends="struts-default" namespace="">
+	
+		<!-- ****************** 用户登录 ****************** -->
+		<action name="login" class="com.taogongbao.action.LoginAction" method="login"></action>
+		<action name="loginOut" class="com.taogongbao.action.LoginAction" method="loginOut">
+			<result name="success" type="redirect">login.jsp</result>
+		</action>
+		<action name="queryLocation" class="com.taogongbao.action.CommonAction" method="queryLocation"></action>
+		<action name="queryOptions" class="com.taogongbao.action.CommonAction" method="queryOptions"></action>
+		
+	</package>
+</struts>

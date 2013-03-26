@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>DateTimeField samples</title>
+	
+		<!-- Ext files -->
+		<link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css" />
+		<script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+		<script type="text/javascript" src="../ext-all-debug.js"></script> 
+		<!-- 中文支持 -->
+		<script type="text/javascript" src="../src/locale/ext-lang-zh_CN.js">
+        </script>
+ 		<!-- Cls files -->
+		<link rel="stylesheet" type="text/css" href="DateTimePicker.css" />
+		<script type="text/javascript" src="cls.js"></script>
+		
+		<script type="text/javascript">
+			Ext.QuickTips.init();
+			Ext.form.Field.prototype.msgTarget = 'side';
+			Ext.o
+			Ext.onReady(function(){
+				var valid=true;
+				var enable=true;
+				
+				var formatArray = ['d/m/Y H:i','d/m/Y H:i:s','d/m/Y h:i:s A'];
+				var cmArray = [];
+				var fieldArray = [];
+				
+				for(var i=0;i<formatArray.length;i++) {
+					var f = formatArray[i];
+					var n = 'f'+i;
+					cmArray.push({
+			           header: 'Format "'+f+'"',
+			           dataIndex: n,
+			           width: 180,
+			           renderer: Ext.util.Format.dateRenderer(f),
+			           editor: new Cls.form.DateTimeField({format: f})//设置EditorField
+			        });
+					fieldArray.push({name: n, mapping: n, type: 'date', dateFormat: f});
+				}
+				
+				var cm = new Ext.grid.ColumnModel(cmArray);
+				cm.defaultSortable = true;
+
+			    var Row = Ext.data.Record.create(fieldArray);
+
+			    // create the Data Store
+			    var store = new Ext.data.Store({
+			        url: 'virtual.xml',
+
+			        // the return will be XML, so lets set up a reader
+			        reader: new Ext.data.XmlReader({
+			               record: 'row'
+			           }, Row),
+
+			        sortInfo:{field:'f1', direction:'ASC'}
+			    });
+
+			    // create the editor grid
+			    var grid = new Ext.grid.EditorGridPanel({
+			        store: store,
+					region:'center',
+					cm: cm,
+			        title:'Grid editor samples',
+			        frame:false,
+			        clicksToEdit:1,
+
+			        tbar: [{
+			            text: 'Add Row',
+			            handler : function(){
+			                var p = new Row({});
+							for(var i=0;i<formatArray.length;i++) {
+								p.data['f'+i]=new Date();
+							};
+			                grid.stopEditing();
+			                store.insert(0, p);
+			                grid.startEditing(0, 0);
+			            }
+			        }]
+			    });
+				
+				var win = new Ext.Window({
+					id: 'SampleWindow',
+					title: "Cls.form.DateTimeField samples",
+					width: 630,
+					height: 450,
+					layout: 'border',
+					layoutConfig: {
+				        // layout-specific configs go here
+				        titleCollapse: false,
+				        animate: true,
+				        activeOnTop: true
+				    },
+					items: [{
+						xtype: 'form',
+						region:'north',
+						height : 215,
+						border: true,
+						title:'Form samples',
+						bodyStyle: 'background-color:#DFE8F6; padding-top:10px',
+						labelWidth: 300,
+						labelAlign:'left',
+						bodyStyle:'padding:15px;background-color:transparent',
+						defaults:{
+							width:200,
+							bodyStyle:'padding:15px'							
+						},
+						items: [{
+							xtype: 'datefield',
+							fieldLabel: 'Normal (Ext.form.DateField)',
+							name: 'name',
+							value: '2009-03-04 11:23:45',
+							format: 'Y-m-d H:i:s'
+						}, {
+							xtype: 'datetimefield',
+							fieldLabel: 'Format "d/m/Y H:i:s"',
+							name: 'time1',
+							value: '04/03/2009 11:23:45',
+							format: 'd/m/Y H:i:s'				
+						},{
+							xtype: 'datetimefield',
+							fieldLabel: 'Format "d/m/Y H:i"',
+							name: 'time3',
+							value: '04/03/2009 11:23',
+							format: 'd/m/Y H:i'						
+						}, {
+							xtype: 'datetimefield',
+							fieldLabel: 'Format "d/m/Y H:i" + Min/Max',
+							name: 'time4',
+							value: '04/03/2009 11:23:45',
+							minValue: '02/03/2009 03:15:20',
+							maxValue: '20/03/2009 17:28:45',
+							format: 'd/m/Y H:i:s'						
+						}, {
+							xtype: 'datetimefield',
+							fieldLabel: 'Format "d/m/Y H:i:s A" + timeFields="H"',
+							name: 'time2',
+							value: '04/03/2009 08:00:00',
+							format: 'd/m/Y h:i:s',
+							timeFields:'H'			
+						}]
+					},
+					grid]
+				});
+				win.show();
+				
+			});
+					
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

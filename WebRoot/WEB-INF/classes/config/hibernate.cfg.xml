@@ -1,0 +1,24 @@
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!-- pu -->
+		<mapping class="com.taogongbao.entity.pu.DictionaryIndustry" />
+		<mapping class="com.taogongbao.entity.pu.DictionaryPosition" />
+		<mapping class="com.taogongbao.entity.pu.Location" />
+		<mapping class="com.taogongbao.entity.pu.Options" />
+		<mapping class="com.taogongbao.entity.pu.BroadcastGroup" />
+		<mapping class="com.taogongbao.entity.pu.SysPara" />
+		
+		<!-- cms -->
+		<mapping class="com.taogongbao.entity.cms.CmsUser" />
+		<mapping class="com.taogongbao.entity.cms.CmsUserLog" />
+		<mapping class="com.taogongbao.entity.cms.CmsMenu" />
+		<mapping class="com.taogongbao.entity.cms.CmsGroupUser" />
+		<mapping class="com.taogongbao.entity.cms.CmsPopedomGroup" />
+		<mapping class="com.taogongbao.entity.cms.CmsGroup" />
+		<mapping class="com.taogongbao.entity.cms.CmsGroupManager" />
+		<mapping class="com.taogongbao.entity.cms.CmsEntGroup" />
+	</session-factory>
+</hibernate-configuration>
