@@ -26,7 +26,7 @@ Ext.onReady(function() {
 						xtype : "field",
 						inputType : 'password',
 						fieldLabel : "密&nbsp;&nbsp;&nbsp;码",
-						value : "wgytgb",
+						value : "123456",
 						allowBlank : false,
 						name : "cmsUser.password",
 						id : "cmsUserPassword",

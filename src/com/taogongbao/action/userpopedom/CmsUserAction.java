@@ -1,13 +1,10 @@
 package com.taogongbao.action.userpopedom;
 
-import java.util.Date;
+import java.util.List;
 
 import com.taogongbao.action.BaseAction;
-import com.taogongbao.common.entity.PageModel;
 import com.taogongbao.common.utils.parse.ParseEngine;
 import com.taogongbao.common.utils.parse.Response;
-import com.taogongbao.dao.cms.ICmsGroupUserDao;
-import com.taogongbao.entity.cms.CmsGroupUser;
 import com.taogongbao.entity.cms.CmsUser;
 import com.taogongbao.manager.userpopedom.ICmsUserManager;
 
@@ -19,33 +16,20 @@ import com.taogongbao.manager.userpopedom.ICmsUserManager;
  */
 public class CmsUserAction extends BaseAction{
 
-	private ICmsUserManager cmsUserManager;
 	private String ids;
 	private CmsUser cmsUser;
 	private String nowPassword;
 	private String newPassword;
 	private String confirmPassword;
-	private ICmsGroupUserDao cmsGroupUserDao;
+	private ICmsUserManager cmsUserManager;
 	private static final long serialVersionUID = -4604244021807287282L;
 	
 	/**
 	 * 添加系统管理员
 	 */
 	public void addCmsUser() {
-
-        CmsUser user = (CmsUser)this.getRequest().getSession().getAttribute("cmsuser");
-        
-	    Response<String> res = cmsUserManager.addCmsUser(cmsUser);
-	    if(res.getCode() == 1){
-    	    CmsGroupUser cmsGroupUser = new CmsGroupUser();
-    	    cmsGroupUser.setCreater(user.getUsername());
-    	    cmsGroupUser.setCreateTime(new Date());
-    	    
-    	    cmsGroupUser.setGroupId(16);
-    	    cmsGroupUser.setUserId(cmsUser.getId());
-    	    cmsGroupUser.setUserName(cmsUser.getUsername());
-    	    cmsGroupUserDao.save(cmsGroupUser);
-	    }
+		
+		Response<String> res = cmsUserManager.addCmsUser(cmsUser);
 		addCmsUserLog("添加新用户", res.getMessage(),res);
 		print(new ParseEngine<Response<String>>().getResponseString(res));
 		
@@ -67,20 +51,10 @@ public class CmsUserAction extends BaseAction{
 	 * 获取管理员列表
 	 */
 	public void queryCmsUsers(){
-	    String userName = "";
-	    int userType = 0;
-	    
-	    Response<PageModel<CmsUser>> res =cmsUserManager.queryCmsUsers(userName, userType,getStart(), getLimit());
-        print(new ParseEngine<Response<PageModel<CmsUser>>>().getResponsePage(res));
-	}
-	
-	/**
-	 *  取得当前管理员的帐号名称
-	 */
-	public void getCurrentAccountName(){
-        CmsUser cmsUser = (CmsUser)this.getRequest().getSession().getAttribute("cmsuser");
-        String username = (null == cmsUser)?"":cmsUser.getUsername();
-        print(username);
+		
+		Response<List<CmsUser>> res = cmsUserManager.queryCmsUsers();
+		print(new ParseEngine<Response<List<CmsUser>>>().getResponseString(res));
+		
 	}
 	
 	/**
@@ -95,11 +69,11 @@ public class CmsUserAction extends BaseAction{
 	}
 	
 	/**
-	 * 管理员修改别人的资料
+	 * 管理员修改别人的密码
 	 */
 	public void updateCmsUserPassword() {
-
-		Response<String> res = cmsUserManager.updateCmsUser(cmsUser);
+		
+		Response<String> res = cmsUserManager.updateCmsUserPassword(cmsUser);
 		addCmsUserLog("修改用户密码", res.getMessage(),res);
 		print(new ParseEngine<Response<String>>().getResponseString(res));
 		
@@ -141,13 +115,5 @@ public class CmsUserAction extends BaseAction{
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
-
-    public ICmsGroupUserDao getCmsGroupUserDao() {
-        return cmsGroupUserDao;
-    }
-
-    public void setCmsGroupUserDao(ICmsGroupUserDao cmsGroupUserDao) {
-        this.cmsGroupUserDao = cmsGroupUserDao;
-    }
 	
 }
