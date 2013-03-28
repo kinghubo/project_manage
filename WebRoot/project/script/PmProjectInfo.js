@@ -51,7 +51,7 @@ function cmsUserPanel() {
 												align : 'center',
 												sortable: true,editor:new Ext.form.TextField(),
 												dataIndex : 'id',
-												width : 120
+												width : 50
 											},{
 												header : '项目名称',
 												align : 'center',
@@ -63,37 +63,37 @@ function cmsUserPanel() {
 												align : 'center',
 												sortable: true,editor:new Ext.form.TextField(),
 												dataIndex : 'explanation',
-												width : 180
+												width : 120
 											},{
 												header : '项目级别',
 												align : 'center',
 												sortable: true,editor:new Ext.form.TextField(),
 												dataIndex : 'level',
-												width : 180
+												width : 100
 											},{
 												header : '项目分类',
 												align : 'center',
 												sortable: true,editor:new Ext.form.TextField(),
 												dataIndex : 'type',
-												width : 180
+												width : 100
 											},{
 												header : '创建时间',
 												align : 'center',
 												sortable: true,editor:new Ext.form.TextField(),
 												dataIndex : 'createDate',
-												width : 180
+												width : 120
 											},{
 												header : '更新时间',
 												align : 'center',
 												sortable: true,editor:new Ext.form.TextField(),
 												dataIndex : 'lastUpdate',
-												width : 180
+												width : 120
 											},{
 												header : '创建人',
 												align : 'center',
 												sortable: true,editor:new Ext.form.TextField(),
 												dataIndex : 'createUserName',
-												width : 180
+												width : 120
 											} ]);
 
 	var storeme = new Ext.data.Store( {
@@ -133,11 +133,11 @@ function cmsUserPanel() {
 	storeme.load( { params : { start : 0,limit : 20 } });
 }
 
-function updateCmsUserPassword(){
+function updateProject(){
 	
 	var records = panel.getSelectionModel().getSelections();
 	if(!panel.getSelectionModel().hasSelection()){
-		Ext.Msg.alert('消息','请选择用户');
+		Ext.Msg.alert('消息','请选择项目');
 		return;
 	}
 	if(records.length >1){
@@ -145,78 +145,151 @@ function updateCmsUserPassword(){
 		return;
 	}
 	
-	updatePasswordWindow = 
+	var updateCmsUserWindow = 
 	new Ext.Window( {
-		title : '重置密码',
-		width : 270,
-		height : 150,
+		title : '修改详情',
+		width : 300,
+		height : 200,
 		layout : 'fit',
 		modal : true, // 设置遮罩
 		resiziable : false,
-		items : [ new Ext.form.FormPanel({
-					items : [{
-								xtype : "textfield",
-								maxLength : 30,
-								fieldLabel : "登录名", 
-								anchor : "90%",
-								value:records[0].get("username"),
-								readOnly : true
-							},{
-								xtype : "textfield",
-								maxLength : 30,
-								fieldLabel : "新密码", 
-								anchor : "90%",
-								id:'newPassword'
-							}]
+		items : [new Ext.form.FormPanel({
+					id:"addProjectForm",
+					scope : this,
+					url:"ProjectInfo!add.do",
+					items : [ {
+						xtype : "hidden",
+						maxLength : 50,
+						fieldLabel : "id",
+						name : "pmProjectInfo.id",
+						value:	records[0].get("id"),
+						id:'id',
+						listeners: {
+			                specialkey: function (textfield, e) {
+			                    if (e.getKey() == Ext.EventObject.ENTER) {
+			                    	Ext.getCmp('name').focus(true,false);
+			                    }
+			                }
+			            }
+					}, {
+						xtype : "textfield",
+						maxLength : 50,
+						fieldLabel : "项目名称",
+						name : "pmProjectInfo.name",
+						value:	records[0].get("name"),
+						id:'name',
+						listeners: {
+			                specialkey: function (textfield, e) {
+			                    if (e.getKey() == Ext.EventObject.ENTER) {
+			                    	Ext.getCmp('explanation').focus(true,false);
+			                    }
+			                }
+			            }
+					},{
+						xtype : "textfield",
+						maxLength : 50,
+						fieldLabel : "项目说明",
+						name : "pmProjectInfo.explanation",
+						value:	records[0].get("explanation"),
+						id:'explanation',
+						listeners: {
+			                specialkey: function (textfield, e) {
+			                    if (e.getKey() == Ext.EventObject.ENTER) {
+			                    	Ext.getCmp('level').focus(true,false);
+			                    }
+			                }
+			            }
+					},{
+						xtype : "textfield",
+						maxLength : 50,
+						fieldLabel : "项目级别",
+						name : "pmProjectInfo.level",
+						value:	records[0].get("level"),
+						id:'level',
+						listeners: {
+			                specialkey: function (textfield, e) {
+			                    if (e.getKey() == Ext.EventObject.ENTER) {
+			                    	Ext.getCmp('type').focus(true,false);
+			                    }
+			                }
+			            }
+					},{
+						xtype : "textfield",
+						maxLength : 50,
+						fieldLabel : "项目分类",
+						name : "pmProjectInfo.type",
+						value:	records[0].get("type"),
+						id:'type'
+					}]
 				}) ],
 		buttons : [ {
-			text : "确定修改",
-			handler : function() {
-				var newPassword = Ext.getCmp("newPassword").getValue();
-				if(null == newPassword || "" == newPassword){
-					Ext.Msg.alert('提示', '请填写新密码！');
-					return;
-				}
-				Ext.Ajax.request( {
-					url : 'updateCmsUserPassword.do',
-					success : function(response, options) {
-						var res = Ext.util.JSON.decode(response.responseText);
-						if(res.code > 0) {
-							updatePasswordWindow.close();
-						}
-						Ext.Msg.alert('信息', res.message);
-					},
-					failure : function(response, options) {
-						Ext.Msg.alert('提示', 'error 500');
-					},
-					params : {'cmsUser.id':records[0].get("id"),'cmsUser.password':newPassword}
-				});
-			},
+			text : "确定",
+			handler : addProjectSubmit, 
 			formBind : true
 		} ]
 	});
-	updatePasswordWindow.show();
+	updateCmsUserWindow.show();
+	
+	function addProjectSubmit(){
+		var name = Ext.getCmp("name").getValue();
+		var explanation = Ext.getCmp("explanation").getValue();
+		var level = Ext.getCmp("level").getValue();
+		var type = Ext.getCmp("type").getValue();
+		if(null == name || "" == name.trim()){
+			Ext.getCmp('name').focus(true,false);
+			Ext.Msg.alert('提示','请填写项目名称');
+			return;
+		}else if(null == explanation || "" == explanation.trim()){
+			Ext.getCmp('explanation').focus(true,false);
+			Ext.Msg.alert('提示','请填写项目说明');
+			return;
+		}else if(null == level || "" == level.trim()){
+			Ext.getCmp('level').focus(true,false);
+			Ext.Msg.alert('提示','请填写项目级别');
+			return;
+		}else if(null == type || "" == type.trim()){
+			Ext.getCmp('type').focus(true,false);
+			Ext.Msg.alert('提示','请填写项目分类');
+			return;
+		}else{
+			Ext.getCmp("addProjectForm").getForm().submit({
+				waitMsg:'正在提交数据... ',
+		        success: function(form, action){
+				   var res = Ext.util.JSON.decode(action.response.responseText);
+		           if(res.code > 0) {
+						panel.store.load();
+						updateCmsUserWindow.close();
+					}
+					Ext.Msg.alert('消息',res.message);
+		        },   
+		       failure: function(){
+		       	  panel.store.load();
+				  updateCmsUserWindow.close();
+		          Ext.Msg.alert('错误', '操作成功！');   
+		       }
+		     });
+		}
+	}
 	
 }
 
-function deleteCmsUsers(){
+function deleteProject(){
 	
 	if(!panel.getSelectionModel().hasSelection()){
-		Ext.Msg.alert('消息','请选择用户');
+		Ext.Msg.alert('消息','请选择项目');
 		return;
 	}
 	var records = panel.getSelectionModel().getSelections();
 	var ids = "";var userNames = "";
 	for ( var i = 0; i < records.length; i++) {
 		ids += records[i].get('id') + ",";
-		userNames += records[i].get('username') + ",";
 	}
 	ids = ids.substring(0, ids.length - 1);
 	userNames = userNames.substring(0, userNames.length - 1);
-	Ext.MessageBox.confirm("提示","你确定删除这些用户吗?<br>"+userNames,function(button){
+	Ext.MessageBox.confirm("提示","你确定删除选中的项目吗?", function(button){
 		if(button=="yes"){
 			Ext.Ajax.request( {
-				url:"deleteCmsUsers.do",
+				url:"ProjectInfo!delete.do",
 				success : function(response, options) {
 					var res = Ext.util.JSON.decode(response.responseText);
 					if(res.code > 0) {
@@ -236,101 +309,119 @@ function deleteCmsUsers(){
 	
 }
 
-function addCmsUser(){
+function addProject(){
 	
 	var addCmsUserWindow =
 	new Ext.Window( {
-		title : '新用户注册',
+		title : '添加新项目',
 		width : 300,
 		height : 200,
 		layout : 'fit',
 		modal : true, // 设置遮罩
-		items : [ new Ext.form.FormPanel( {
+		items : [ new Ext.form.FormPanel({
+					id:"addProjectForm",
+					scope : this,
+					url:"ProjectInfo!add.do",
 					items : [ {
 						xtype : "textfield",
 						maxLength : 50,
-						fieldLabel : "用户名",
-						name : "cmsUser.username",
-						id:'userName',
+						fieldLabel : "项目名称",
+						name : "pmProjectInfo.name",
+						id:'name',
 						listeners: {
 			                specialkey: function (textfield, e) {
 			                    if (e.getKey() == Ext.EventObject.ENTER) {
-			                    	Ext.getCmp('pass1').focus(true,false);
+			                    	Ext.getCmp('explanation').focus(true,false);
 			                    }
 			                }
 			            }
 					},{
-						xtype : "field",
+						xtype : "textfield",
 						maxLength : 50,
-						inputType : 'password',
-						fieldLabel : "密&nbsp;&nbsp;&nbsp;码",
-						name : "cmsUser.password",
-						id : "pass1",
+						fieldLabel : "项目说明",
+						name : "pmProjectInfo.explanation",
+						id:'explanation',
 						listeners: {
 			                specialkey: function (textfield, e) {
 			                    if (e.getKey() == Ext.EventObject.ENTER) {
-			                    	Ext.getCmp('pass2').focus(true,false);
+			                    	Ext.getCmp('level').focus(true,false);
 			                    }
 			                }
 			            }
 					},{
-						xtype : "field",
+						xtype : "textfield",
 						maxLength : 50,
-						inputType : 'password',
-						fieldLabel : "确&nbsp;&nbsp;&nbsp;认",
-						id : "pass2",
+						fieldLabel : "项目级别",
+						name : "pmProjectInfo.level",
+						id:'level',
 						listeners: {
-	                        specialkey: function (textfield, e) {
-	                            if (e.getKey() == Ext.EventObject.ENTER) {
-	                            	addUserSubmit();
-	                            }
-	                        }
-	                    }
+			                specialkey: function (textfield, e) {
+			                    if (e.getKey() == Ext.EventObject.ENTER) {
+			                    	Ext.getCmp('type').focus(true,false);
+			                    }
+			                }
+			            }
+					},{
+						xtype : "textfield",
+						maxLength : 50,
+						fieldLabel : "项目分类",
+						name : "pmProjectInfo.type",
+						id:'type'
 					}]
 				}) ],
 		buttons : [ {
 			text : "确定",
-			handler : addUserSubmit, 
+			handler : addProjectSubmit, 
 			formBind : true
 		} ]
 	});
 	addCmsUserWindow.show();
 	
-	Ext.getCmp('userName').focus(true,false);
+	Ext.getCmp('name').focus(true,false);
 	
-	function addUserSubmit(){
-		var userName = Ext.getCmp("userName").getValue();
-		var password = Ext.getCmp("pass1").getValue();
-		var password2 = Ext.getCmp("pass2").getValue();
-		if(null == userName || "" == userName.trim()){
-			Ext.getCmp('userName').focus(true,false);
-			Ext.Msg.alert('提示','请填写用户名');
+	function addProjectSubmit(){
+		var name = Ext.getCmp("name").getValue();
+		var explanation = Ext.getCmp("explanation").getValue();
+		var level = Ext.getCmp("level").getValue();
+		var type = Ext.getCmp("type").getValue();
+		if(null == name || "" == name.trim()){
+			Ext.getCmp('name').focus(true,false);
+			Ext.Msg.alert('提示','请填写项目名称');
 			return;
-		}else if(null == password || "" == password || null == password2 || "" == password2){
-			Ext.getCmp('pass1').focus(true,false);
-			Ext.Msg.alert('提示','请填写密码');
+		}else if(null == explanation || "" == explanation.trim()){
+			Ext.getCmp('explanation').focus(true,false);
+			Ext.Msg.alert('提示','请填写项目说明');
 			return;
-		}else if(password != password2){
-			Ext.getCmp('pass2').focus(true,false);
-			Ext.Msg.alert('提示','两次密码不一致');
+		}else if(null == level || "" == level.trim()){
+			Ext.getCmp('level').focus(true,false);
+			Ext.Msg.alert('提示','请填写项目级别');
+			return;
+		}else if(null == type || "" == type.trim()){
+			Ext.getCmp('type').focus(true,false);
+			Ext.Msg.alert('提示','请填写项目分类');
 			return;
 		}else{
-			Ext.Ajax.request( {
-				url : 'addCmsUser.do',
-				success : function(response, options) {
-					var res = Ext.util.JSON.decode(response.responseText);
-					if(res.code > 0) {
+			Ext.getCmp("addProjectForm").getForm().submit({
+				waitMsg:'正在提交数据... ',
+		        success: function(form, action){
+				   var res = Ext.util.JSON.decode(action.response.responseText);
+		           if(res.code > 0) {
 						panel.store.load();
 						addCmsUserWindow.close();
 					}
 					Ext.Msg.alert('消息',res.message);
-				},
-				failure : function(response, options) {
-					Ext.Msg.alert('提示', '网络延时或错误。');
-				},
-				params : {'cmsUser.username':userName,'cmsUser.password':password}
-			});
+		        },   
+		       failure: function(){
+		       	  panel.store.load();
+				  addCmsUserWindow.close();
+		          Ext.Msg.alert('错误', '操作成功！');   
+		       }
+		     });
 		}
 	}
-	
+}
+
+
+function search(){
+	panel.store.load();
 }

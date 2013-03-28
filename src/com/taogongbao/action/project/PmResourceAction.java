@@ -12,7 +12,7 @@ import com.taogongbao.dao.project.IPmProjectInfoDao;
 import com.taogongbao.entity.cms.CmsUser;
 import com.taogongbao.entity.project.PmProjectInfo;
 
-public class PmProjectInfoAction extends BaseAction{
+public class PmResourceAction extends BaseAction{
 	private IPmProjectInfoDao pmProjectInfoDao;
 	private PmProjectInfo pmProjectInfo;
 	public void setPmProjectInfoDao(IPmProjectInfoDao pmProjectInfoDao) {

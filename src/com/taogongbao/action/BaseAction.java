@@ -36,6 +36,11 @@ public class BaseAction  extends ActionSupport implements Preparable {
 	private String content;//内容
 	private String picFileName;
 	private ICmsUserLogManager cmsUserLogManager;
+	protected String ids;
+	
+	public void setIds(String ids) {
+		this.ids = ids;
+	}
 	private static final long serialVersionUID = 5926134931393176313L;
 
 	/**

@@ -14,9 +14,9 @@ package com.taogongbao.common.utils.parse;
  */
 public class Response<T> {
     /** 返回状态码 */
-    private int code;
+    private int code = 1;
     /** 返回错误消息 **/
-    private String message = "";
+    private String message = "操作成功";
     /** 返回的结果对象 */
     private T data;
     /** sessionId */
