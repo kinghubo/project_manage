@@ -1,8 +1,7 @@
 package com.taogongbao.action.userpopedom;
 
-import java.util.List;
-
 import com.taogongbao.action.BaseAction;
+import com.taogongbao.common.entity.PageModel;
 import com.taogongbao.common.utils.parse.ParseEngine;
 import com.taogongbao.common.utils.parse.Response;
 import com.taogongbao.entity.cms.CmsUser;
@@ -51,10 +50,11 @@ public class CmsUserAction extends BaseAction{
 	 * 获取管理员列表
 	 */
 	public void queryCmsUsers(){
-		
-		Response<List<CmsUser>> res = cmsUserManager.queryCmsUsers();
-		print(new ParseEngine<Response<List<CmsUser>>>().getResponseString(res));
-		
+	    String userName = "";
+	    int userType = 0;
+	    
+	    Response<PageModel<CmsUser>> res =cmsUserManager.queryCmsUsers(userName, userType,getStart(), getLimit());
+        print(new ParseEngine<Response<PageModel<CmsUser>>>().getResponsePage(res));
 	}
 	
 	/**
