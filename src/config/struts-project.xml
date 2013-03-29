@@ -19,6 +19,10 @@
 	
 		<!-- ****************** 项目管理 ******************** -->
 		<action name="ProjectInfo" class="com.taogongbao.action.project.PmProjectInfoAction"></action>
+		<action name="PmFunds" class="com.taogongbao.action.project.PmFundsAction"></action>
+		<action name="PmLog" class="com.taogongbao.action.project.PmLogAction"></action>
+		<action name="PmNotice" class="com.taogongbao.action.project.PmNoticeAction"></action>
+		<action name="PmResource" class="com.taogongbao.action.project.PmResourceAction"></action>
 		
 	</package>
 </struts>

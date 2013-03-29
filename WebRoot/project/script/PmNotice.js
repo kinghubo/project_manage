@@ -3,6 +3,7 @@
  */
 
 var panel;
+var newcomersPanel;
 
 Ext.onReady(function() {
 	Ext.QuickTips.init();
@@ -133,11 +134,11 @@ function cmsUserPanel() {
 	storeme.load( { params : { start : 0,limit : 20 } });
 }
 
-function updateProject(){
+function updateNotice(){
 	
-	var records = panel.getSelectionModel().getSelections();
-	if(!panel.getSelectionModel().hasSelection()){
-		Ext.Msg.alert('消息','请选择项目');
+	var records = newcomersPanel.getSelectionModel().getSelections();
+	if(!newcomersPanel.getSelectionModel().hasSelection()){
+		Ext.Msg.alert('消息','请选择公告');
 		return;
 	}
 	if(records.length >1){
@@ -156,14 +157,28 @@ function updateProject(){
 		items : [new Ext.form.FormPanel({
 					id:"addProjectForm",
 					scope : this,
-					url:"ProjectInfo!add.do",
+					url:"PmNotice!add.do",
 					items : [ {
 						xtype : "hidden",
 						maxLength : 50,
 						fieldLabel : "id",
-						name : "pmProjectInfo.id",
+						name : "pmNotice.id",
 						value:	records[0].get("id"),
 						id:'id',
+						listeners: {
+			                specialkey: function (textfield, e) {
+			                    if (e.getKey() == Ext.EventObject.ENTER) {
+			                    	Ext.getCmp('proId').focus(true,false);
+			                    }
+			                }
+			            }
+					}, {
+						xtype : "hidden",
+						maxLength : 50,
+						fieldLabel : "proId",
+						name : "pmNotice.proId",
+						value:	records[0].get("proId"),
+						id:'proId',
 						listeners: {
 			                specialkey: function (textfield, e) {
 			                    if (e.getKey() == Ext.EventObject.ENTER) {
@@ -174,24 +189,24 @@ function updateProject(){
 					}, {
 						xtype : "textfield",
 						maxLength : 50,
-						fieldLabel : "项目名称",
-						name : "pmProjectInfo.name",
+						fieldLabel : "公告名称",
+						name : "pmNotice.name",
 						value:	records[0].get("name"),
 						id:'name',
 						listeners: {
 			                specialkey: function (textfield, e) {
 			                    if (e.getKey() == Ext.EventObject.ENTER) {
-			                    	Ext.getCmp('explanation').focus(true,false);
+			                    	Ext.getCmp('content').focus(true,false);
 			                    }
 			                }
 			            }
 					},{
 						xtype : "textfield",
 						maxLength : 50,
-						fieldLabel : "项目说明",
-						name : "pmProjectInfo.explanation",
-						value:	records[0].get("explanation"),
-						id:'explanation',
+						fieldLabel : "公告内容",
+						name : "pmNotice.content",
+						value:	records[0].get("content"),
+						id:'content',
 						listeners: {
 			                specialkey: function (textfield, e) {
 			                    if (e.getKey() == Ext.EventObject.ENTER) {
@@ -199,27 +214,6 @@ function updateProject(){
 			                    }
 			                }
 			            }
-					},{
-						xtype : "textfield",
-						maxLength : 50,
-						fieldLabel : "项目级别",
-						name : "pmProjectInfo.level",
-						value:	records[0].get("level"),
-						id:'level',
-						listeners: {
-			                specialkey: function (textfield, e) {
-			                    if (e.getKey() == Ext.EventObject.ENTER) {
-			                    	Ext.getCmp('type').focus(true,false);
-			                    }
-			                }
-			            }
-					},{
-						xtype : "textfield",
-						maxLength : 50,
-						fieldLabel : "项目分类",
-						name : "pmProjectInfo.type",
-						value:	records[0].get("type"),
-						id:'type'
 					}]
 				}) ],
 		buttons : [ {
@@ -232,24 +226,14 @@ function updateProject(){
 	
 	function addProjectSubmit(){
 		var name = Ext.getCmp("name").getValue();
-		var explanation = Ext.getCmp("explanation").getValue();
-		var level = Ext.getCmp("level").getValue();
-		var type = Ext.getCmp("type").getValue();
+		var content = Ext.getCmp("content").getValue();
 		if(null == name || "" == name.trim()){
 			Ext.getCmp('name').focus(true,false);
-			Ext.Msg.alert('提示','请填写项目名称');
+			Ext.Msg.alert('提示','请填写公告名称');
 			return;
-		}else if(null == explanation || "" == explanation.trim()){
-			Ext.getCmp('explanation').focus(true,false);
-			Ext.Msg.alert('提示','请填写项目说明');
-			return;
-		}else if(null == level || "" == level.trim()){
-			Ext.getCmp('level').focus(true,false);
-			Ext.Msg.alert('提示','请填写项目级别');
-			return;
-		}else if(null == type || "" == type.trim()){
-			Ext.getCmp('type').focus(true,false);
-			Ext.Msg.alert('提示','请填写项目分类');
+		}else if(null == content || "" == content.trim()){
+			Ext.getCmp('content').focus(true,false);
+			Ext.Msg.alert('提示','请填写公告内容');
 			return;
 		}else{
 			Ext.getCmp("addProjectForm").getForm().submit({
@@ -257,13 +241,13 @@ function updateProject(){
 		        success: function(form, action){
 				   var res = Ext.util.JSON.decode(action.response.responseText);
 		           if(res.code > 0) {
-						panel.store.load();
+						newcomersPanel.store.load();
 						updateCmsUserWindow.close();
 					}
 					Ext.Msg.alert('消息',res.message);
 		        },   
 		       failure: function(){
-		       	  panel.store.load();
+		       	  newcomersPanel.store.load();
 				  updateCmsUserWindow.close();
 		          Ext.Msg.alert('错误', '操作成功！');   
 		       }
@@ -273,27 +257,27 @@ function updateProject(){
 	
 }
 
-function deleteProject(){
+function deleteNotice(){
 	
-	if(!panel.getSelectionModel().hasSelection()){
+	if(!newcomersPanel.getSelectionModel().hasSelection()){
 		Ext.Msg.alert('消息','请选择项目');
 		return;
 	}
-	var records = panel.getSelectionModel().getSelections();
+	var records = newcomersPanel.getSelectionModel().getSelections();
 	var ids = "";var userNames = "";
 	for ( var i = 0; i < records.length; i++) {
 		ids += records[i].get('id') + ",";
 	}
 	ids = ids.substring(0, ids.length - 1);
 	userNames = userNames.substring(0, userNames.length - 1);
-	Ext.MessageBox.confirm("提示","你确定删除选中的项目吗?", function(button){
+	Ext.MessageBox.confirm("提示","你确定删除选中的公告吗?", function(button){
 		if(button=="yes"){
 			Ext.Ajax.request( {
-				url:"ProjectInfo!delete.do",
+				url:"PmNotice!delete.do",
 				success : function(response, options) {
 					var res = Ext.util.JSON.decode(response.responseText);
 					if(res.code > 0) {
-						panel.store.reload();
+						newcomersPanel.store.reload();
 					}
 					Ext.Msg.alert('信息', res.message);
 				},
@@ -309,11 +293,21 @@ function deleteProject(){
 	
 }
 
-function addProject(){
+function addNotice(){
+	
+	var records = panel.getSelectionModel().getSelections();
+	if(!panel.getSelectionModel().hasSelection()){
+		Ext.Msg.alert('消息','请选择项目');
+		return;
+	}
+	if(records.length >1){
+		Ext.Msg.alert('消息','请逐一设置');
+		return;
+	}
 	
 	var addCmsUserWindow =
 	new Ext.Window( {
-		title : '添加新项目',
+		title : '添加新公告',
 		width : 300,
 		height : 200,
 		layout : 'fit',
@@ -321,52 +315,33 @@ function addProject(){
 		items : [ new Ext.form.FormPanel({
 					id:"addProjectForm",
 					scope : this,
-					url:"ProjectInfo!add.do",
+					url:"PmNotice!add.do",
 					items : [ {
+						xtype : "hidden",
+						maxLength : 50,
+						fieldLabel : "proId",
+						name : "pmNotice.proId",
+						value : records[0].get("id"),
+						id:'proId'
+					},{
 						xtype : "textfield",
 						maxLength : 50,
-						fieldLabel : "项目名称",
-						name : "pmProjectInfo.name",
+						fieldLabel : "公告名称",
+						name : "pmNotice.name",
 						id:'name',
 						listeners: {
 			                specialkey: function (textfield, e) {
 			                    if (e.getKey() == Ext.EventObject.ENTER) {
-			                    	Ext.getCmp('explanation').focus(true,false);
+			                    	Ext.getCmp('content').focus(true,false);
 			                    }
 			                }
 			            }
 					},{
 						xtype : "textfield",
 						maxLength : 50,
-						fieldLabel : "项目说明",
-						name : "pmProjectInfo.explanation",
-						id:'explanation',
-						listeners: {
-			                specialkey: function (textfield, e) {
-			                    if (e.getKey() == Ext.EventObject.ENTER) {
-			                    	Ext.getCmp('level').focus(true,false);
-			                    }
-			                }
-			            }
-					},{
-						xtype : "textfield",
-						maxLength : 50,
-						fieldLabel : "项目级别",
-						name : "pmProjectInfo.level",
-						id:'level',
-						listeners: {
-			                specialkey: function (textfield, e) {
-			                    if (e.getKey() == Ext.EventObject.ENTER) {
-			                    	Ext.getCmp('type').focus(true,false);
-			                    }
-			                }
-			            }
-					},{
-						xtype : "textfield",
-						maxLength : 50,
-						fieldLabel : "项目分类",
-						name : "pmProjectInfo.type",
-						id:'type'
+						fieldLabel : "公告内容",
+						name : "pmNotice.content",
+						id:'content'
 					}]
 				}) ],
 		buttons : [ {
@@ -381,24 +356,14 @@ function addProject(){
 	
 	function addProjectSubmit(){
 		var name = Ext.getCmp("name").getValue();
-		var explanation = Ext.getCmp("explanation").getValue();
-		var level = Ext.getCmp("level").getValue();
-		var type = Ext.getCmp("type").getValue();
+		var content = Ext.getCmp("content").getValue();
 		if(null == name || "" == name.trim()){
 			Ext.getCmp('name').focus(true,false);
-			Ext.Msg.alert('提示','请填写项目名称');
+			Ext.Msg.alert('提示','请填写公告名称');
 			return;
-		}else if(null == explanation || "" == explanation.trim()){
-			Ext.getCmp('explanation').focus(true,false);
-			Ext.Msg.alert('提示','请填写项目说明');
-			return;
-		}else if(null == level || "" == level.trim()){
-			Ext.getCmp('level').focus(true,false);
-			Ext.Msg.alert('提示','请填写项目级别');
-			return;
-		}else if(null == type || "" == type.trim()){
-			Ext.getCmp('type').focus(true,false);
-			Ext.Msg.alert('提示','请填写项目分类');
+		}else if(null == content || "" == content.trim()){
+			Ext.getCmp('content').focus(true,false);
+			Ext.Msg.alert('提示','请填写公告内容');
 			return;
 		}else{
 			Ext.getCmp("addProjectForm").getForm().submit({
@@ -406,13 +371,13 @@ function addProject(){
 		        success: function(form, action){
 				   var res = Ext.util.JSON.decode(action.response.responseText);
 		           if(res.code > 0) {
-						panel.store.load();
+						newcomersPanel.store.load();
 						addCmsUserWindow.close();
 					}
 					Ext.Msg.alert('消息',res.message);
 		        },   
 		       failure: function(){
-		       	  panel.store.load();
+		       	  newcomersPanel.store.load();
 				  addCmsUserWindow.close();
 		          Ext.Msg.alert('错误', '操作成功！');   
 		       }
@@ -422,6 +387,100 @@ function addProject(){
 }
 
 
-function search(){
-	panel.store.load();
+function searchNotice(){
+	
+	var records = panel.getSelectionModel().getSelections();
+	if(!panel.getSelectionModel().hasSelection()){
+		Ext.Msg.alert('消息','请选择项目');
+		return;
+	}
+	if(records.length >1){
+		Ext.Msg.alert('消息','请逐一设置');
+		return;
+	}
+	
+	var newcomers = Ext.data.Record.create( [ {name : 'id',type : 'string'}, {name : 'proId',type : 'string'}, {name : 'name',type : 'string'}, {name : 'content',type : 'string'}, {name : 'createTime',type : 'string'}, {name : 'createUserName',type : 'string'}]);
+
+	var newcomersSm = new Ext.grid.CheckboxSelectionModel( {singleSelect : false});
+
+	var newcomersCm = new Ext.grid.ColumnModel( [ new Ext.grid.RowNumberer(), newcomersSm, 
+	                                              {header : 'ID',sortable: true,editor:new Ext.form.TextField(),align : 'center',dataIndex : 'id',width : 120},
+	                                              {header : '项目ID',sortable: true,editor:new Ext.form.TextField(),align : 'center',dataIndex : 'proId',width : 120},
+	                                              {header : '公告名称',sortable: true,editor:new Ext.form.TextField(),align : 'center',dataIndex : 'name',width : 80},
+	                                              {header : '公告内容',sortable: true,editor:new Ext.form.TextField(),align : 'center',dataIndex : 'content',width : 80},
+	                                              {header : '创建时间',sortable: true,editor:new Ext.form.TextField(),align : 'center',dataIndex : 'createTime',width : 120},
+	                                              {header : '创建人',sortable: true,editor:new Ext.form.TextField(),align : 'center',dataIndex : 'createUserName',width : 120}
+	                                             ]);
+
+	var newcomersStore = new Ext.data.Store( {
+		autoLoad : true,
+		id : "newcomersStoreme",
+		proxy : new Ext.data.HttpProxy( {
+			url : 'PmNotice!search.do',
+			method : 'post',
+			params : {}
+		}),
+		reader : new Ext.data.JsonReader( {
+			root : 'data.dataList',
+			totalProperty : 'data.totalRows' // 指定分页控件属性用
+		}, newcomers)
+	});
+	newcomersPanel = new Ext.grid.EditorGridPanel({
+		store : newcomersStore,
+		cm : newcomersCm,
+		sm : newcomersSm,
+		region : 'center',
+		bodyStyle : 'width:100%;height:100%',
+		autoScroll : true,
+		viewConfig : {
+			forceFit : true
+		},
+		listeners : {
+			'activate' : function() {
+				newcomersStore.load( {
+					params : {
+						start : 0,
+						limit : 30
+					}
+				});
+			},
+			'rowselect' : function() {
+				alert("请等待");
+			}
+		},
+		tbar : [ {
+			pressed : true,
+			text : '添加公告',
+			scope : this,
+			handler : addNotice
+		},{
+			pressed : true,
+			text : '修改公告',
+			scope : this,
+			handler : updateNotice
+		},{
+			pressed : true,
+			text : '删除公告',
+			scope : this,
+			handler : deleteNotice
+		}],
+		bbar : new Ext.PagingToolbar( {
+			pageSize : 30,
+			store : newcomersStore,
+			displayInfo : true,
+			displayMsg : '显示第 {0} 条到 {1} 条记录，一共 {2} 条',
+			emptyMsg : "没有记录"
+		})
+	});
+	
+	addNewcomersWindow = new Ext.Window( {
+		title : '查看公告',
+		width : 600,
+		height : 400,
+		layout : 'fit',
+		modal : true, // 设置遮罩
+		items : [newcomersPanel]
+	});
+	
+	addNewcomersWindow.show();
 }

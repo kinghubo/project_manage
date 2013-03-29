@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>务工易企业服务运营支撑系统</title>
+    <title>项目管理系统</title>
     
 	<link rel="stylesheet" href="ext/resources/css/ext-all.css" type="text/css"></link>
 	<script type="text/javascript" src="ext/adapter/ext/ext-base.js"></script>

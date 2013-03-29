@@ -59,7 +59,7 @@ function cmsUserPanel() {
 			params : { start : 0,limit : 20 }
 		}),
 		reader : new Ext.data.JsonReader( {
-			root : 'data',
+			root : 'data.dataList',
 			totalProperty : 'data.totalRows' // 指定分页控件属性用
 		}, Person)
 	});

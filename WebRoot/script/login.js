@@ -6,7 +6,7 @@ Ext.onReady(function() {
 			frame : true,
 			width : 300,
 			labelWidth : 70,
-			title : "务工易企业服务运营支撑系统登录",
+			title : "项目管理系统登陆",
 			labelAlign : "left",
 			items : [ {
 						xtype : "textfield",

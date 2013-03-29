@@ -7,7 +7,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
-		<title>务工易企业服务运营支撑系统</title>
+		<title>项目管理系统</title>
 
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -18,7 +18,7 @@
 		<div id="loading-mask" style=""></div>
 		<div class="loading-indicator">
 			<img src="css/images/loading.gif" width="32" height="32" style="margin-right: 8px; float: left; vertical-align: top;" />
-			务工易企业服务运营支撑系统<br />
+			项目管理系统<br />
 			<span id="loading-msg">正在载入...</span>
 		</div>
 		<div id="loading"></div>
